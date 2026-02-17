@@ -33,38 +33,34 @@ public final class VolatileOwnerDisconnectListener {
             VolatileComponent.getComponentType()
     );
 
-    private VolatileOwnerDisconnectListener() {
-        // static-only class
-    }
-
     public static void onPlayerDisconnect(@Nonnull PlayerDisconnectEvent event) {
         UUID playerUuid = event.getPlayerRef().getUuid();
 
         // Get the world where the player was last present
         World world = Universe.get().getWorld(event.getPlayerRef().getWorldUuid());
         if (world == null) return;
+        world.execute(() -> {
+            Store<EntityStore> store = world.getEntityStore().getStore();
 
-        Store<EntityStore> store = world.getEntityStore().getStore();
-        Query<EntityStore> query = QUERY;
+            // For safety, you could wrap this in world.execute(...) if needed
+            store.forEachChunk(QUERY, (ArchetypeChunk<EntityStore> chunk, CommandBuffer<EntityStore> cmd) -> {
+                for (int i = 0; i < chunk.size(); i++) {
+                    VolatileComponent vc = chunk.getComponent(i, VolatileComponent.getComponentType());
+                    if (vc == null) continue;
+                    if (!vc.hasPolicy(VolatilePolicy.OWNER_DISCONNECT)) continue;
 
-        // For safety, you could wrap this in world.execute(...) if needed
-        store.forEachChunk(query, (ArchetypeChunk<EntityStore> chunk, CommandBuffer<EntityStore> cmd) -> {
-            for (int i = 0; i < chunk.size(); i++) {
-                VolatileComponent vc = chunk.getComponent(i, VolatileComponent.getComponentType());
-                if (vc == null) continue;
-                if (!vc.hasPolicy(VolatilePolicy.OWNER_DISCONNECT)) continue;
-
-                UUID owner = vc.getOwnerUuid();
-                if (owner != null && owner.equals(playerUuid)) {
-                    // Simply mark the entity for removal. VolatileTickSystem will do the actual remove().
-                    vc.markForRemoval("Owner disconnected");
+                    UUID owner = vc.getOwnerUuid();
+                    if (owner != null && owner.equals(playerUuid)) {
+                        // Simply mark the entity for removal. VolatileTickSystem will do the actual remove().
+                        vc.markForRemoval("Owner disconnected");
+                    }
                 }
-            }
-        });
+            });
 
-        VolatileEntitiesPlugin.getInstance().getLogger().atFine().log(
-                "[VolatileEntities] Marked volatile entities of player %s for removal on disconnect",
-                playerUuid
-        );
+            VolatileEntitiesPlugin.getInstance().getLogger().atFine().log(
+                    "[VolatileEntities] Marked volatile entities of player %s for removal on disconnect",
+                    playerUuid
+            );
+        });
     }
 }

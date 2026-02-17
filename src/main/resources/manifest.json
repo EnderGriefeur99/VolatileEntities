@@ -1,7 +1,7 @@
 {
   "Group": "Ender_Griefeur99",
   "Name": "VolatileEntities",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Authors": [
     {
       "Name": "Ender_Griefeur99",
@@ -11,7 +11,7 @@
   ],
   "Website": "",
   "Main": "fr.ender_griefeur99.volatileentities.VolatileEntitiesPlugin",
-  "ServerVersion": "*",
+  "ServerVersion": "2026.02.17-255364b8e",
   "IncludesAssetPack": false,
   "OptionalDependencies": { }
 }
