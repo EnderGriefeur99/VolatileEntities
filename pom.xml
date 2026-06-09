@@ -6,7 +6,7 @@
 
     <groupId>fr.ender_griefeur99</groupId>
     <artifactId>volatile-entities</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Volatile Entities</name>

@@ -6,8 +6,9 @@ import com.hypixel.hytale.component.Component;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.component.Holder;
 import com.hypixel.hytale.component.Ref;
-import com.hypixel.hytale.math.vector.Vector3d;
-import com.hypixel.hytale.math.vector.Vector3f;
+import com.hypixel.hytale.math.vector.Rotation3f;
+import org.joml.Vector3d;
+import org.joml.Vector3f;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import fr.ender_griefeur99.volatileentities.component.VolatileComponent;
@@ -63,7 +64,7 @@ public final class VolatileEntityBuilder {
     @Nonnull
     public VolatileEntityBuilder at(@Nonnull Vector3d position) {
         add(TransformComponent.getComponentType(),
-                new TransformComponent(position, new Vector3f(0f, 0f, 0f)));
+                new TransformComponent(position, new Rotation3f(0f, 0f, 0f)));
         return this;
     }
 
@@ -79,7 +80,7 @@ public final class VolatileEntityBuilder {
      * Set the entity's transform (position + rotation).
      */
     @Nonnull
-    public VolatileEntityBuilder at(@Nonnull Vector3d position, @Nonnull Vector3f rotation) {
+    public VolatileEntityBuilder at(@Nonnull Vector3d position, @Nonnull Rotation3f rotation) {
         add(TransformComponent.getComponentType(), new TransformComponent(position, rotation));
         return this;
     }

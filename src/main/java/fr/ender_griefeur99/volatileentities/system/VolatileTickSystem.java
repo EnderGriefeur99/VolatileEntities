@@ -7,7 +7,7 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
-import com.hypixel.hytale.math.vector.Vector3d;
+import org.joml.Vector3d;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import fr.ender_griefeur99.volatileentities.VolatileEntitiesPlugin;
@@ -161,7 +161,7 @@ public final class VolatileTickSystem extends EntityTickingSystem<EntityStore> {
 
         Vector3d myPos = myT.getPosition();
         Vector3d targetPos = targetT.getPosition();
-        double distSq = myPos.distanceSquaredTo(targetPos);
+        double distSq = myPos.distanceSquared(targetPos);
 
         if (distSq > (double) vc.getMaxDistanceSquared()) {
             return VolatileRemovalReason.MAX_DISTANCE_EXCEEDED;
